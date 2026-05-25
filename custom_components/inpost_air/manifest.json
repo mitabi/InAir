@@ -10,16 +10,16 @@
   "dependencies": [
     "recorder"
   ],
-  "documentation": "https://github.com/CyberDeer/InPost-Air",
+  "documentation": "https://github.com/mitabi/InPost-Air",
   "homekit": {},
   "integration_type": "device",
   "iot_class": "cloud_polling",
-  "issue_tracker": "https://github.com/CyberDeer/InPost-Air/issues",
+  "issue_tracker": "https://github.com/mitabi/InPost-Air/issues",
   "requirements": [
     "dacite==1.9.2",
     "python-slugify==8.0.4"
   ],
   "ssdp": [],
-  "version": "1.7.0",
+  "version": "1.7.1",
   "zeroconf": []
 }

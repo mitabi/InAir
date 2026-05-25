@@ -47,7 +47,7 @@ PARCEL_LOCKER_SENSORS = [
         state_class=SensorStateClass.MEASUREMENT,
         icon="mdi:percent",
         exists_fn=lambda data: item.value is not None
-        if (item := data.get(Entities.PM10)) is not None
+        if (item := data.get(Entities.PM2_5)) is not None
         else False,
         value_fn=lambda data: item.norm
         if (item := data.get(Entities.PM2_5)) and isinstance(item, ValueWithNorm)
@@ -139,8 +139,8 @@ async def async_setup_entry(
     async_add_entities(
         [
             *base_sensors,
-            PolishAirQualityIndexSensor(parcel_locker),
-            EuropeanAirQualityIndexSensor(parcel_locker),
+            PolishAirQualityIndexSensor(parcel_locker, coordinator.api_client),
+            EuropeanAirQualityIndexSensor(parcel_locker, coordinator.api_client),
         ],
         update_before_add=True,
     )

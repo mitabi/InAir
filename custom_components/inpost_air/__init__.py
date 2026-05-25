@@ -50,6 +50,11 @@ async def async_setup_entry(hass: HomeAssistant, entry: InPostAirConfiEntry) -> 
         return False
 
     if (parcel_locker_id := await api_client.find_parcel_locker_id(point)) is None:
+        _LOGGER.error(
+            "Cannot set up InPost Air for %s: failed to resolve parcel locker ID from %s",
+            point.n,
+            get_parcel_locker_url(point),
+        )
         return False
 
     parcel_locker = ParcelLocker(point.n, parcel_locker_id)

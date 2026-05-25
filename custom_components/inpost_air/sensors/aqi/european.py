@@ -23,8 +23,8 @@ class EuropeanAirQualityIndexSensor(AirQualityIndexSensor):
     Represents a sensor for calculating the European Air Quality Index.
     """
 
-    def __init__(self, parcel_locker: ParcelLocker) -> None:
-        super().__init__(parcel_locker)
+    def __init__(self, parcel_locker: ParcelLocker, api_client=None) -> None:
+        super().__init__(parcel_locker, api_client)
         self._attr_name = "European Air Quality Index"
         self._attr_unique_id = f"{parcel_locker.locker_code}_eaqi"
 
@@ -109,5 +109,5 @@ class EuropeanAirQualityIndexSensor(AirQualityIndexSensor):
         self._attr_native_value = (
             EuropeanAirQualityIndexCategory(max(sub_indices)).name
             if len(sub_indices) > 0
-            else None
+            else await self.get_shipx_air_index_level()
         )

@@ -1,5 +1,7 @@
 from abc import abstractmethod
 from datetime import timedelta
+import logging
+from typing import TYPE_CHECKING
 
 from homeassistant.components import recorder
 from homeassistant.components.recorder import history
@@ -10,6 +12,11 @@ from homeassistant.util import dt as dt_util
 from custom_components.inpost_air import utils
 from custom_components.inpost_air.models import ParcelLocker
 from custom_components.inpost_air.const import Entities
+
+if TYPE_CHECKING:
+    from custom_components.inpost_air.api import InPostApi
+
+_LOGGER = logging.getLogger(__name__)
 
 
 class AirQualityIndexSensor(SensorEntity):
@@ -22,9 +29,12 @@ class AirQualityIndexSensor(SensorEntity):
     def __init__(
         self,
         parcel_locker: ParcelLocker,
+        api_client: "InPostApi | None" = None,
     ) -> None:
         self._attr_device_info = utils.get_device_info(parcel_locker)
         self._attr_icon = "mdi:air-filter"
+        self._api_client = api_client
+        self._locker_code = parcel_locker.locker_code
 
     @abstractmethod
     async def async_update(self) -> None:
@@ -94,3 +104,14 @@ class AirQualityIndexSensor(SensorEntity):
         )
 
         return values
+
+    async def get_shipx_air_index_level(self) -> str | None:
+        """Retrieve fallback air quality index level from ShipX API."""
+        if self._api_client is None:
+            return None
+
+        try:
+            return await self._api_client.get_shipx_air_index_level(self._locker_code)
+        except Exception as err:  # pylint: disable=broad-except
+            _LOGGER.debug("Failed to fetch ShipX air_index_level fallback: %s", err)
+            return None

@@ -144,16 +144,46 @@ class InPostApi:
 
     async def find_parcel_locker_id(self, point: InPostAirPoint) -> str | None:
         """Find parcel locker ID by its code."""
+        parcel_locker_url = get_parcel_locker_url(point)
         response = await self._request(
             method="get",
-            url=get_parcel_locker_url(point),
+            url=parcel_locker_url,
         )
+        response_text = await response.text()
         match = re.search(
             r"data-shipx-url=\"/shipx-point-data/(.*?)/(.*?)/air_index_level\"",
-            await response.text(),
+            response_text,
         )
+        if match is None:
+            _LOGGER.warning(
+                "Unable to extract parcel locker ID for %s from %s (shipx marker present: %s)",
+                point.n,
+                parcel_locker_url,
+                'data-shipx-url="/shipx-point-data/' in response_text,
+            )
+            return None
 
-        return None if match is None else match.group(1)
+        return match.group(1)
+
+    async def get_shipx_air_index_level(self, locker_code: str) -> str | None:
+        """Get current air index level directly from ShipX API."""
+        if not locker_code:
+            return None
+
+        response = await self._request(
+            method="get",
+            url=f"https://api-shipx-pl.easypack24.net/v1/points/{locker_code}",
+        )
+        resp = await response.json()
+
+        if resp.get("error"):
+            _LOGGER.warning(
+                "ShipX point lookup for %s returned error: %s", locker_code, resp
+            )
+            return None
+
+        air_index_level = resp.get("air_index_level")
+        return air_index_level.upper() if isinstance(air_index_level, str) else None
 
     async def get_parcel_locker_air_data(
         self, locker_code: str, locker_id: str

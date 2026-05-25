@@ -1,7 +1,7 @@
 # InPost Air
-[![landroid_cloud](https://img.shields.io/github/v/release/cyberdeer/inpost-air.svg?include_prereleases&label=Current%20release)](https://github.com/CyberDeer/InPost-Air) 
+[![landroid_cloud](https://img.shields.io/github/v/release/mitabi/inpost-air.svg?include_prereleases&label=Current%20release)](https://github.com/mitabi/InPost-Air) 
 [![hacs_badge](https://img.shields.io/badge/HACS-Default-41BDF5.svg)](https://github.com/hacs/integration)
-[![downloads](https://img.shields.io/github/downloads/cyberdeer/inpost-air/total?label=Total%20downloads)](https://github.com/CyberDeer/InPost-Air)
+[![downloads](https://img.shields.io/github/downloads/mitabi/inpost-air/total?label=Total%20downloads)](https://github.com/mitabi/InPost-Air)
 
 This component has been created to be used with Home Assistant. 
 

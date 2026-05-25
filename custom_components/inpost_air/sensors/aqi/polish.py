@@ -24,8 +24,8 @@ class PolishAirQualityIndexSensor(AirQualityIndexSensor):
     Represents a sensor for calculating the Polish Air Quality Index.
     """
 
-    def __init__(self, parcel_locker: ParcelLocker) -> None:
-        super().__init__(parcel_locker)
+    def __init__(self, parcel_locker: ParcelLocker, api_client=None) -> None:
+        super().__init__(parcel_locker, api_client)
         self._attr_name = "Polish Air Quality Index"
         self._attr_unique_id = f"{parcel_locker.locker_code}_paqi"
 
@@ -110,5 +110,5 @@ class PolishAirQualityIndexSensor(AirQualityIndexSensor):
         self._attr_native_value = (
             PolishAirQualityIndexCategory(max(sub_indices)).name
             if len(sub_indices) > 0
-            else None
+            else await self.get_shipx_air_index_level()
         )
