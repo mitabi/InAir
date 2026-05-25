@@ -18,7 +18,7 @@ This component has been created to be used with Home Assistant.
 #### Manual installation
 
 - Download the latest release.
-- Unpack the release and copy the custom_components/inpost_air directory into the custom_components directory of your Home Assistant installation.
+- Unpack the release and copy the custom_components/inair directory into the custom_components directory of your Home Assistant installation.
 - Restart Home Assistant.
 - Go to Integrations and add the InAir integration
 

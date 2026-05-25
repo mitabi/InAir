@@ -9,13 +9,13 @@ from homeassistant.const import (
 )
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
-from custom_components.inpost_air import InPostAirConfiEntry
-from custom_components.inpost_air.coordinator import ValueWithNorm
-from custom_components.inpost_air.sensors.aqi.european import (
+from custom_components.inair import InPostAirConfiEntry
+from custom_components.inair.coordinator import ValueWithNorm
+from custom_components.inair.sensors.aqi.european import (
     EuropeanAirQualityIndexSensor,
 )
-from custom_components.inpost_air.sensors.aqi.polish import PolishAirQualityIndexSensor
-from custom_components.inpost_air.sensors.parcel_locker_sensor import (
+from custom_components.inair.sensors.aqi.polish import PolishAirQualityIndexSensor
+from custom_components.inair.sensors.parcel_locker_sensor import (
     ParcelLockerSensor,
     ParcelLockerSensorEntityDescription,
 )

@@ -16,7 +16,7 @@
         [
             "@ceski23/semantic-release-hacs",
             {
-                "manifestPath": "custom_components/inpost_air/manifest.json"
+                "manifestPath": "custom_components/inair/manifest.json"
             }
         ],
         [
@@ -25,7 +25,7 @@
                 "message": "chore(release): ${nextRelease.version} [skip ci]",
                 "assets": [
                     "CHANGELOG.md",
-                    "custom_components/inpost_air/manifest.json",
+                    "custom_components/inair/manifest.json",
                     "pyproject.toml",
                     "uv.lock"
                 ]

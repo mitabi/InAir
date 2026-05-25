@@ -11,9 +11,9 @@ from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ConfigEntryNotReady, ConfigEntryError
 from homeassistant.helpers import device_registry as dr
 
-from custom_components.inpost_air.coordinator import InPostAirDataCoordinator
-from custom_components.inpost_air.models import ParcelLocker
-from custom_components.inpost_air.utils import get_device_info, get_parcel_locker_url
+from custom_components.inair.coordinator import InPostAirDataCoordinator
+from custom_components.inair.models import ParcelLocker
+from custom_components.inair.utils import get_device_info, get_parcel_locker_url
 
 from .api import InPostAirPoint, InPostApi
 

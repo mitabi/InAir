@@ -4,6 +4,8 @@
 ### Bug Fixes
 
 * synchronize package and integration versioning after the `InAir` rebranding changes
+* rename the Home Assistant integration package directory from `inpost_air` to `inair`
+* align the integration domain, tests, CI paths, and release metadata with the new `inair` package name
 
 ## [1.7.2](https://github.com/mitabi/InAir/compare/v1.7.1...v1.7.2) (2026-05-25)
 

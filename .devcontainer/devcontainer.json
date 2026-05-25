@@ -36,7 +36,7 @@
           "--color=yes",
           "--cov-report",
           "xml:coverage.xml",
-          "--cov=custom_components/inpost_air",
+          "--cov=custom_components/inair",
           "--ctrf=report.json",
           "tests"
         ],

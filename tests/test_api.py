@@ -1,8 +1,8 @@
 import pytest
 import pytest_socket
 import os
-from custom_components.inpost_air.api import InPostApi
-from custom_components.inpost_air.models import (
+from custom_components.inair.api import InPostApi
+from custom_components.inair.models import (
     InPostAirPoint,
     InPostAirPointCoordinates,
 )

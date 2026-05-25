@@ -1,15 +1,15 @@
 """Utils tests."""
 
 from unittest.mock import Mock
-from custom_components.inpost_air.models import (
+from custom_components.inair.models import (
     InPostAirPoint,
     InPostAirPointCoordinates,
     ParcelLocker,
 )
-from custom_components.inpost_air.const import DOMAIN
-from custom_components.inpost_air.utils import can_be_float, get_device_info, haversine
+from custom_components.inair.const import DOMAIN
+from custom_components.inair.utils import can_be_float, get_device_info, haversine
 from homeassistant.helpers.device_registry import DeviceInfo
-from custom_components.inpost_air.utils import get_parcel_locker_url
+from custom_components.inair.utils import get_parcel_locker_url
 
 
 def test_haversine():

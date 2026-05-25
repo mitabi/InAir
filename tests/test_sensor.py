@@ -4,14 +4,14 @@ from unittest.mock import AsyncMock
 
 import pytest
 
-from custom_components.inpost_air.const import Entities
-from custom_components.inpost_air.coordinator import ValueWithNorm
-from custom_components.inpost_air.models import ParcelLocker
-from custom_components.inpost_air.sensor import PARCEL_LOCKER_SENSORS
-from custom_components.inpost_air.sensors.aqi.european import (
+from custom_components.inair.const import Entities
+from custom_components.inair.coordinator import ValueWithNorm
+from custom_components.inair.models import ParcelLocker
+from custom_components.inair.sensor import PARCEL_LOCKER_SENSORS
+from custom_components.inair.sensors.aqi.european import (
     EuropeanAirQualityIndexSensor,
 )
-from custom_components.inpost_air.sensors.aqi.polish import PolishAirQualityIndexSensor
+from custom_components.inair.sensors.aqi.polish import PolishAirQualityIndexSensor
 
 
 def test_pm25_norm_exists_fn_uses_pm25_data():

@@ -8,8 +8,8 @@ from aiohttp import ClientResponse, ClientResponseError
 from dacite import from_dict
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.aiohttp_client import async_create_clientsession
-from custom_components.inpost_air.models import InPostAirPoint
-from custom_components.inpost_air.utils import get_parcel_locker_url
+from custom_components.inair.models import InPostAirPoint
+from custom_components.inair.utils import get_parcel_locker_url
 
 _LOGGER = logging.getLogger(__name__)
 

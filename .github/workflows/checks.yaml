@@ -53,7 +53,7 @@ jobs:
         run: uv sync --all-extras --dev --locked
 
       - name: Run tests
-        run: uv run pytest --cov-report "xml:coverage.xml" --cov=custom_components/inpost_air --ctrf=report.json tests/
+        run: uv run pytest --cov-report "xml:coverage.xml" --cov=custom_components/inair --ctrf=report.json tests/
 
       - name: Pytest coverage comment
         if: ${{ !cancelled() && github.event_name == 'pull_request' }}

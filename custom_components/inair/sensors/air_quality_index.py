@@ -9,12 +9,12 @@ from homeassistant.components.sensor import SensorEntity
 from homeassistant.helpers import device_registry, entity_registry
 from homeassistant.util import dt as dt_util
 
-from custom_components.inpost_air import utils
-from custom_components.inpost_air.models import ParcelLocker
-from custom_components.inpost_air.const import Entities
+from custom_components.inair import utils
+from custom_components.inair.models import ParcelLocker
+from custom_components.inair.const import Entities
 
 if TYPE_CHECKING:
-    from custom_components.inpost_air.api import InPostApi
+    from custom_components.inair.api import InPostApi
 
 _LOGGER = logging.getLogger(__name__)
 

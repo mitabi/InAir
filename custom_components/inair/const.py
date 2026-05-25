@@ -2,7 +2,7 @@
 
 from enum import StrEnum
 
-DOMAIN = "inpost_air"
+DOMAIN = "inair"
 CONF_PARCEL_LOCKER_ID = "parcelLockerId"
 
 

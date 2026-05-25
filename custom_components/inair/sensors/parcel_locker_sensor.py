@@ -9,9 +9,9 @@ from homeassistant.core import callback
 from homeassistant.helpers.typing import StateType
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
-from custom_components.inpost_air.models import ParcelLocker
-from custom_components.inpost_air.coordinator import ValueWithNorm, ValueWithoutNorm
-from custom_components.inpost_air.utils import get_device_info
+from custom_components.inair.models import ParcelLocker
+from custom_components.inair.coordinator import ValueWithNorm, ValueWithoutNorm
+from custom_components.inair.utils import get_device_info
 
 
 @dataclass(kw_only=True)

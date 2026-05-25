@@ -2,9 +2,9 @@
 
 from unittest import mock
 from unittest.mock import patch
-from custom_components.inpost_air import config_flow
-from custom_components.inpost_air.api import InPostApi
-from custom_components.inpost_air.models import (
+from custom_components.inair import config_flow
+from custom_components.inair.api import InPostApi
+from custom_components.inair.models import (
     InPostAirPoint,
     InPostAirPointCoordinates,
 )
@@ -46,7 +46,7 @@ async def test_flow_init(hass):
         "description_placeholders": None,
         "errors": {},
         "flow_id": mock.ANY,
-        "handler": "inpost_air",
+        "handler": "inair",
         "step_id": "user",
         "type": "form",
         "last_step": None,

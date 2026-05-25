@@ -1,9 +1,9 @@
 import statistics
 from enum import IntEnum, auto
 
-from custom_components.inpost_air.models import ParcelLocker
-from custom_components.inpost_air.const import Entities
-from custom_components.inpost_air.sensors.air_quality_index import AirQualityIndexSensor
+from custom_components.inair.models import ParcelLocker
+from custom_components.inair.const import Entities
+from custom_components.inair.sensors.air_quality_index import AirQualityIndexSensor
 
 
 class PolishAirQualityIndexCategory(IntEnum):

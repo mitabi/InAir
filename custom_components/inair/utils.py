@@ -3,8 +3,8 @@ from math import asin, cos, radians, sin, sqrt
 from homeassistant.helpers.device_registry import DeviceInfo
 from slugify import slugify
 
-from custom_components.inpost_air.const import DOMAIN
-from custom_components.inpost_air.models import InPostAirPoint, ParcelLocker
+from custom_components.inair.const import DOMAIN
+from custom_components.inair.models import InPostAirPoint, ParcelLocker
 
 
 def haversine(lon1, lat1, lon2, lat2):
