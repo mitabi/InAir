@@ -2,24 +2,22 @@
   "domain": "inpost_air",
   "name": "InPost Air",
   "codeowners": [
-    "@mbober1",
-    "@ceski23",
-    "@mikart143"
+    "@mitabi"
   ],
   "config_flow": true,
   "dependencies": [
     "recorder"
   ],
-  "documentation": "https://github.com/mitabi/InPost-Air",
+  "documentation": "https://github.com/mitabi/InAir",
   "homekit": {},
   "integration_type": "device",
   "iot_class": "cloud_polling",
-  "issue_tracker": "https://github.com/mitabi/InPost-Air/issues",
+  "issue_tracker": "https://github.com/mitabi/InAir/issues",
   "requirements": [
     "dacite==1.9.2",
     "python-slugify==8.0.4"
   ],
   "ssdp": [],
-  "version": "1.7.1",
+  "version": "1.7.2",
   "zeroconf": []
 }

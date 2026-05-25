@@ -1,7 +1,7 @@
 # InPost Air
-[![landroid_cloud](https://img.shields.io/github/v/release/mitabi/inpost-air.svg?include_prereleases&label=Current%20release)](https://github.com/mitabi/InPost-Air) 
+[![landroid_cloud](https://img.shields.io/github/v/release/mitabi/InAir.svg?include_prereleases&label=Current%20release)](https://github.com/mitabi/InAir) 
 [![hacs_badge](https://img.shields.io/badge/HACS-Default-41BDF5.svg)](https://github.com/hacs/integration)
-[![downloads](https://img.shields.io/github/downloads/mitabi/inpost-air/total?label=Total%20downloads)](https://github.com/mitabi/InPost-Air)
+[![downloads](https://img.shields.io/github/downloads/mitabi/InAir/total?label=Total%20downloads)](https://github.com/mitabi/InAir)
 
 This component has been created to be used with Home Assistant. 
 
@@ -47,6 +47,13 @@ Platform | Entity | Description
 -- | -- | --
 `sensor` | `parcel_locker_[YOUR_PARCEL_ID]_eaqi` | [The European Air Quality Index](https://www.eea.europa.eu/themes/air/air-quality-index).
 `sensor` | `parcel_locker_[YOUR_PARCEL_ID]_paqi` | [The Polish Air Quality Index](https://powietrze.gios.gov.pl/pjp/content/health_informations) (Pol. Indeks Jakości Powietrza).
+
+### Note
+
+This project has been developed so far by:
+- @mbober1
+- @ceski23
+- @mikart143
 
 
 
