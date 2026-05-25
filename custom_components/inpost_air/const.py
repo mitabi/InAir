@@ -1,4 +1,4 @@
-"""Constants for the InPost Air integration."""
+"""Constants for the InAir integration."""
 
 from enum import StrEnum
 

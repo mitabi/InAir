@@ -1,4 +1,4 @@
-"""The InPost Air integration."""
+"""The InAir integration."""
 
 from __future__ import annotations
 from dataclasses import dataclass
@@ -23,7 +23,7 @@ _LOGGER = logging.getLogger(__name__)
 @dataclass
 class InPostAirData:
     """
-    Represents data related to InPost Air service.
+    Represents data related to InAir service.
     """
 
     parcel_locker: ParcelLocker
@@ -36,7 +36,7 @@ PLATFORMS: list[Platform] = [Platform.SENSOR]
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: InPostAirConfiEntry) -> bool:
-    """Set up InPost Air from a config entry."""
+    """Set up InAir from a config entry."""
     api_client = InPostApi(hass)
     entry_data = entry.data.get("parcel_locker")
 
@@ -51,7 +51,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: InPostAirConfiEntry) -> 
 
     if (parcel_locker_id := await api_client.find_parcel_locker_id(point)) is None:
         _LOGGER.error(
-            "Cannot set up InPost Air for %s: failed to resolve parcel locker ID from %s",
+            "Cannot set up InAir for %s: failed to resolve parcel locker ID from %s",
             point.n,
             get_parcel_locker_url(point),
         )

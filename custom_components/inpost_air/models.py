@@ -13,7 +13,7 @@ class ParcelLocker:
 @dataclass
 class InPostAirPointCoordinates:
     """
-    Represents the coordinates of an InPost Air point.
+    Represents the coordinates of an InAir point.
 
     Attributes:
         a (float): The latitude coordinate.

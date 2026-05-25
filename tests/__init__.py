@@ -1,1 +1,1 @@
-"""Tests for the InPost Air integration."""
+"""Tests for the InAir integration."""

@@ -1,4 +1,4 @@
-# InPost Air
+# InAir
 [![landroid_cloud](https://img.shields.io/github/v/release/mitabi/InAir.svg?include_prereleases&label=Current%20release)](https://github.com/mitabi/InAir) 
 [![hacs_badge](https://img.shields.io/badge/HACS-Default-41BDF5.svg)](https://github.com/hacs/integration)
 [![downloads](https://img.shields.io/github/downloads/mitabi/InAir/total?label=Total%20downloads)](https://github.com/mitabi/InAir)
@@ -11,16 +11,16 @@ This component has been created to be used with Home Assistant.
 
 - Ensure that HACS is installed.
 - Add custom repository.
-- Search for and install the "InPost Air" integration.
+- Search for and install the "InAir" integration.
 - Restart Home Assistant.
-- Go to Integrations and add the InPost Air integration
+- Go to Integrations and add the InAir integration
 
 #### Manual installation
 
 - Download the latest release.
 - Unpack the release and copy the custom_components/inpost_air directory into the custom_components directory of your Home Assistant installation.
 - Restart Home Assistant.
-- Go to Integrations and add the InPost Air integration
+- Go to Integrations and add the InAir integration
 
 
 ### Entities & Services

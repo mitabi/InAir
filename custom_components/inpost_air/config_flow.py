@@ -1,4 +1,4 @@
-"""Config flow for InPost Air integration."""
+"""Config flow for InAir integration."""
 
 from __future__ import annotations
 from dataclasses import dataclass
@@ -56,7 +56,7 @@ async def validate_input(hass: HomeAssistant, data: dict[str, Any]) -> InPostAir
 
 
 class InPostAirConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
-    """Handle a config flow for InPost Air."""
+    """Handle a config flow for InAir."""
 
     VERSION = 2
     MINOR_VERSION = 1
