@@ -10,6 +10,7 @@
 
 * restore automatic release archive generation in the release workflow
 * refresh `uv.lock` to match locked CI dependency resolution
+* fix YAML indentation in `.github/workflows/release.yaml`
 
 ## [1.7.1](https://github.com/mitabi/InAir/compare/v1.7.0...v1.7.1) (2026-05-25)
 
