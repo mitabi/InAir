@@ -1,3 +1,10 @@
+## [1.7.3](https://github.com/mitabi/InAir/compare/v1.7.2...v1.7.3) (2026-05-25)
+
+
+### Bug Fixes
+
+* synchronize package and integration versioning after the `InAir` rebranding changes
+
 ## [1.7.2](https://github.com/mitabi/InAir/compare/v1.7.1...v1.7.2) (2026-05-25)
 
 
