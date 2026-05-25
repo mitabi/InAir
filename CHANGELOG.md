@@ -4,6 +4,7 @@
 ### Features
 
 * migrate repository links and release metadata to the new `mitabi/InAir` location
+* rename the integration branding from `InPost Air` to `InAir`
 
 
 ### Bug Fixes
@@ -11,6 +12,7 @@
 * restore automatic release archive generation in the release workflow
 * refresh `uv.lock` to match locked CI dependency resolution
 * fix YAML indentation in `.github/workflows/release.yaml`
+* update setup and documentation strings to use the new `InAir` name consistently
 
 ## [1.7.1](https://github.com/mitabi/InAir/compare/v1.7.0...v1.7.1) (2026-05-25)
 
