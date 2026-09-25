@@ -3,9 +3,9 @@
 
 ### Bug Fixes
 
-* add HA 2026.x compatibility for density unit and device lookup ([3636a8a](https://github.com/mitabi/InAir/commit/3636a8aee8ed4656089245c8c98dde9862bd1e22))
-* add release.zip to .gitignore ([6438ac2](https://github.com/mitabi/InAir/commit/6438ac23a5bac1a4209698096ecdb9b997612941))
-* use async_get_device for device lookup on all HA versions ([480d5a4](https://github.com/mitabi/InAir/commit/480d5a404c4ee2daeb02e44842260ef3a3cc800d))
+* handle the `UnitOfDensity` enum for PM and gas concentration units with a fallback to the legacy constant on older Home Assistant versions
+* query the device registry with the stable `async_get_device` API in the air quality index sensors on every supported Home Assistant version
+* ignore the generated `release.zip` release archive in git
 
 ## [1.7.3](https://github.com/mitabi/InAir/compare/v1.7.2...v1.7.3) (2026-05-25)
 
