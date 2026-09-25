@@ -63,14 +63,26 @@ class AirQualityIndexSensor(SensorEntity):
         """
         Retrieves data from sensors for the specified time period.
         """
-        device = device_registry.async_get(self.hass).async_get_device(
-            identifiers=self.device_info.get("identifiers")
-            if self.device_info is not None
-            else None,
-            connections=self.device_info.get("connections")
-            if self.device_info is not None
-            else None,
+        identifiers = (
+            self.device_info.get("identifiers") if self.device_info is not None else None
         )
+        connections = (
+            self.device_info.get("connections") if self.device_info is not None else None
+        )
+        registry = device_registry.async_get(self.hass)
+        get_device_by_identifier = getattr(
+            registry, "async_get_device_by_identifier", None
+        )
+        if get_device_by_identifier is not None:
+            # homeassistant >= 2024.2: async_get_device is deprecated in favour
+            # of an identifier-only lookup.
+            device = get_device_by_identifier(identifiers=identifiers)
+        else:
+            # homeassistant < 2024.2 or >= 2026.2: async_get_device is the
+            # canonical API again.
+            device = registry.async_get_device(
+                identifiers=identifiers, connections=connections
+            )
 
         if device is None:
             return []
