@@ -83,8 +83,9 @@ class AirQualityIndexSensor(SensorEntity):
                     device := get_device_by_identifier(identifier, entry.entry_id)
                 ) is not None:
                     break
-        if device is None:
-            # homeassistant < 2026.8: fall back to the deprecated lookup.
+        else:
+            # homeassistant < 2026.8: the identifier-scoped API does not
+            # exist yet, so use the (not yet deprecated) unscoped lookup.
             device = registry.async_get_device(
                 identifiers=identifiers, connections=connections
             )
