@@ -88,7 +88,10 @@ async def test_get_sensors_data_uses_identifier_lookup():
         "identifiers": {(DOMAIN, "AJE01BAPP")},
         "connections": None,
     }
-    sensor.registry_entry = MagicMock(config_entry_id="abc")
+    sensor.hass = MagicMock()
+    sensor.hass.config_entries.async_entries.return_value = [
+        MagicMock(entry_id="abc")
+    ]
 
     registry = MagicMock()
     registry.async_get_device_by_identifier.return_value = None
@@ -108,17 +111,19 @@ async def test_get_sensors_data_uses_identifier_lookup():
 async def test_get_sensors_data_falls_back_to_async_get_device():
     """Device query should fall back to async_get_device when needed.
 
-    async_get_device_by_identifier only exists on homeassistant >= 2025.9,
-    and the identifier lookup needs a config entry id; on older versions or
-    without a registered entity the deprecated registry call is used.
+    async_get_device_by_identifier only exists on homeassistant >= 2026.8;
+    on older versions the deprecated registry call is used.
     """
     sensor = EuropeanAirQualityIndexSensor(ParcelLocker("AJE01BAPP", "56311"), None)
     sensor.device_info = {
         "identifiers": {(DOMAIN, "AJE01BAPP")},
         "connections": None,
     }
+    sensor.hass = MagicMock()
+    sensor.hass.config_entries.async_entries.return_value = []
 
     registry = MagicMock()
+    registry.async_get_device_by_identifier = None
     registry.async_get_device.return_value = None
 
     with patch(

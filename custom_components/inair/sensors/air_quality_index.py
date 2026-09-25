@@ -11,7 +11,7 @@ from homeassistant.util import dt as dt_util
 
 from custom_components.inair import utils
 from custom_components.inair.models import ParcelLocker
-from custom_components.inair.const import Entities
+from custom_components.inair.const import DOMAIN, Entities
 
 if TYPE_CHECKING:
     from custom_components.inair.api import InPostApi
@@ -71,19 +71,20 @@ class AirQualityIndexSensor(SensorEntity):
         )
         registry = device_registry.async_get(self.hass)
         identifier = next(iter(identifiers), None) if identifiers else None
-        config_entry_id = getattr(self.registry_entry, "config_entry_id", None)
         get_device_by_identifier = getattr(
             registry, "async_get_device_by_identifier", None
         )
-        if (
-            get_device_by_identifier is not None
-            and identifier is not None
-            and config_entry_id is not None
-        ):
-            # homeassistant >= 2025.9: device lookup is scoped to a config
+        device = None
+        if get_device_by_identifier is not None and identifier is not None:
+            # homeassistant >= 2026.8: device lookup is scoped to a config
             # entry via an identifier tuple.
-            device = get_device_by_identifier(identifier, config_entry_id)
-        else:
+            for entry in self.hass.config_entries.async_entries(DOMAIN):
+                if (
+                    device := get_device_by_identifier(identifier, entry.entry_id)
+                ) is not None:
+                    break
+        if device is None:
+            # homeassistant < 2026.8: fall back to the deprecated lookup.
             device = registry.async_get_device(
                 identifiers=identifiers, connections=connections
             )
