@@ -70,9 +70,23 @@ class AirQualityIndexSensor(SensorEntity):
             self.device_info.get("connections") if self.device_info is not None else None
         )
         registry = device_registry.async_get(self.hass)
-        device = registry.async_get_device(
-            identifiers=identifiers, connections=connections
+        identifier = next(iter(identifiers), None) if identifiers else None
+        config_entry_id = getattr(self.registry_entry, "config_entry_id", None)
+        get_device_by_identifier = getattr(
+            registry, "async_get_device_by_identifier", None
         )
+        if (
+            get_device_by_identifier is not None
+            and identifier is not None
+            and config_entry_id is not None
+        ):
+            # homeassistant >= 2025.9: device lookup is scoped to a config
+            # entry via an identifier tuple.
+            device = get_device_by_identifier(identifier, config_entry_id)
+        else:
+            device = registry.async_get_device(
+                identifiers=identifiers, connections=connections
+            )
 
         if device is None:
             return []
