@@ -1,3 +1,10 @@
+## [1.7.5](https://github.com/mitabi/InAir/compare/v1.7.4...v1.7.5) (2026-09-25)
+
+
+### Bug Fixes
+
+* use async_get_device_by_identifier for device lookup ([61324ac](https://github.com/mitabi/InAir/commit/61324ac769bbcf15a1111ecfd00ac58ca4765c93))
+
 ## [1.7.4](https://github.com/mitabi/InAir/compare/v1.7.3...v1.7.4) (2026-09-25)
 
 
