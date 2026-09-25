@@ -446,3 +446,4 @@ $RECYCLE.BIN/
 # CTRF report
 report.json
 /.claude/settings.local.json
+release.zip

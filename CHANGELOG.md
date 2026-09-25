@@ -20,6 +20,7 @@
 
 * restore automatic release archive generation in the release workflow
 * refresh `uv.lock` to match locked CI dependency resolution
+
 * fix YAML indentation in `.github/workflows/release.yaml`
 * update setup and documentation strings to use the new `InAir` name consistently
 
