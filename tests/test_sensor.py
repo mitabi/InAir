@@ -81,31 +81,12 @@ async def test_aqi_fallback_to_shipx_air_index_level(sensor_cls, expected):
     api_client.get_shipx_air_index_level.assert_awaited_once_with("AJE01BAPP")
 
 
-async def test_get_sensors_data_uses_identifier_lookup():
-    """Device query should use the identifier-based registry API when available."""
-    sensor = EuropeanAirQualityIndexSensor(ParcelLocker("AJE01BAPP", "56311"), None)
-    sensor.device_info = {"identifiers": {(DOMAIN, "AJE01BAPP")}}
+async def test_get_sensors_data_queries_device_registry():
+    """Device query should use the registry's async_get_device.
 
-    registry = MagicMock()
-    registry.async_get_device_by_identifier.return_value = None
-
-    with patch(
-        "custom_components.inair.sensors.air_quality_index.device_registry.async_get",
-        return_value=registry,
-    ):
-        await sensor.get_sensors_data([])
-
-    registry.async_get_device_by_identifier.assert_called_once_with(
-        identifiers={(DOMAIN, "AJE01BAPP")}
-    )
-    registry.async_get_device.assert_not_called()
-
-
-async def test_get_sensors_data_falls_back_to_async_get_device():
-    """Device query should fall back to async_get_device when needed.
-
-    async_get_device_by_identifier only exists on homeassistant 2024.2 up to
-    2025.x; on older and newer versions async_get_device is the API to use.
+    The identifiers+connections signature of async_get_device has been the
+    canonical API on every Home Assistant version (2023.x through latest),
+    so no version-specific branching is needed.
     """
     sensor = EuropeanAirQualityIndexSensor(ParcelLocker("AJE01BAPP", "56311"), None)
     sensor.device_info = {
@@ -114,7 +95,6 @@ async def test_get_sensors_data_falls_back_to_async_get_device():
     }
 
     registry = MagicMock()
-    registry.async_get_device_by_identifier = None
     registry.async_get_device.return_value = None
 
     with patch(
