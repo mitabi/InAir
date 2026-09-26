@@ -1,3 +1,11 @@
+## [1.7.6](https://github.com/mitabi/InAir/compare/v1.7.5...v1.7.6) (2026-09-26)
+
+
+### Bug Fixes
+
+* resolve the config entry id for the device registry lookup performed through the integration
+* use the deprecated device lookup only on Home Assistant < 2026.8
+
 ## [1.7.5](https://github.com/mitabi/InAir/compare/v1.7.4...v1.7.5) (2026-09-25)
 
 
