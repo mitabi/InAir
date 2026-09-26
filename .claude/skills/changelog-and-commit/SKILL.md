@@ -35,18 +35,24 @@ Przy nowym wydaniu oba pola muszą mieć ten sam numer.
 - Zaktualizuj `version` w `custom_components/inair/manifest.json`.
 - Upewnij się, że obie wartości są identyczne.
 
-### 3. Zrób commit release
-Użyj:
-
+### 3. Zrób dwa commity release (wzorzec historii repo, oba z `[skip ci]`)
 ```bash
-git add CHANGELOG.md pyproject.toml custom_components/inair/manifest.json
-git commit -m "chore(release): bump version to X.Y.Z and update changelog"
+git add CHANGELOG.md
+git commit -m "docs(changelog): describe v1.7.6 changes [skip ci]"
+
+git add pyproject.toml custom_components/inair/manifest.json
+git commit -m "chore(release): 1.7.6 [skip ci]"
 ```
 
 ### 4. Wypchnij zmiany
 ```bash
 git push origin master
 ```
+
+### 5. Opublikuj release na GitHub (krok ręczny)
+Push **nie tworzy release**. Wersję na GitHub publikuje workflow „Build and release"
+(`.github/workflows/release.yaml`, semantic-release, trigger ręczny):
+GitHub → Actions → „Build and release" → Run workflow → `dryRun: false`.
 
 ## Zasady commitów release
 Wzorzec z historii repo — dwa commity, oba z `[skip ci]`:
@@ -60,19 +66,26 @@ chore(release): X.Y.Z [skip ci]
 Nie wolno publikować releasu, który zmienia tylko `pyproject.toml`. W projekcie Home Assistant integracja musi mieć zgodną wersję również w `custom_components/inair/manifest.json`.
 
 ## Minimalna checklist
-- [ ] `CHANGELOG.md` został zaktualizowany
+- [ ] `CHANGELOG.md` zaktualizowany w formacie repo (link compare + data)
+- [ ] commit `docs(changelog): describe vX.Y.Z changes [skip ci]`
 - [ ] `pyproject.toml` ma nową wersję
 - [ ] `custom_components/inair/manifest.json` ma tę samą wersję
-- [ ] commit ma sensowny komunikat release
-- [ ] zmiany zostały wypchnięte do `master`
+- [ ] commit `chore(release): X.Y.Z [skip ci]`
+- [ ] zmiany wypchnięte do `master`
+- [ ] release opublikowany ręcznie: Actions → „Build and release" → `dryRun: false`
 
 ## Przykład gotowego wydania
 ```bash
 # 1. Zmiana changelog i wersji
-# 2. Commit
-git add CHANGELOG.md pyproject.toml custom_components/inair/manifest.json
-git commit -m "chore(release): bump version to 1.7.6 and update changelog"
+# 2. Commity
+git add CHANGELOG.md
+git commit -m "docs(changelog): describe v1.7.6 changes [skip ci]"
+
+git add pyproject.toml custom_components/inair/manifest.json
+git commit -m "chore(release): 1.7.6 [skip ci]"
 
 # 3. Push
 git push origin master
+
+# 4. Release na GitHub (ręcznie): Actions → „Build and release" → dryRun: false
 ```
