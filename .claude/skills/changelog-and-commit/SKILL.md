@@ -1,5 +1,5 @@
 ---
-name: changelog_and_commit
+name: changelog-and-commit
 description: Aktualizuje changelog, podbija wersję projektu i tworzy release commit w repozytorium InAir, z zachowaniem wersji w pyproject.toml i manifest Home Assistant.
 ---
 
@@ -42,7 +42,7 @@ git commit -m "chore(release): bump version to X.Y.Z and update changelog"
 
 ### 4. Wypchnij zmiany
 ```bash
-git push origin main
+git push origin master
 ```
 
 ## Zasady commit message
@@ -62,7 +62,7 @@ Nie wolno publikować releasu, który zmienia tylko `pyproject.toml`. W projekci
 - [ ] `pyproject.toml` ma nową wersję
 - [ ] `custom_components/inair/manifest.json` ma tę samą wersję
 - [ ] commit ma sensowny komunikat release
-- [ ] zmiany zostały wypchnięte do `main`
+- [ ] zmiany zostały wypchnięte do `master`
 
 ## Przykład gotowego wydania
 ```bash
@@ -72,5 +72,5 @@ git add CHANGELOG.md pyproject.toml custom_components/inair/manifest.json
 git commit -m "chore(release): bump version to 1.7.6 and update changelog"
 
 # 3. Push
-git push origin main
+git push origin master
 ```
