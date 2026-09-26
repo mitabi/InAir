@@ -49,10 +49,10 @@ git commit -m "chore(release): 1.7.6 [skip ci]"
 git push origin master
 ```
 
-### 5. Opublikuj release na GitHub (krok ręczny)
-Push **nie tworzy release**. Wersję na GitHub publikuje workflow „Build and release"
-(`.github/workflows/release.yaml`, semantic-release, trigger ręczny):
-GitHub → Actions → „Build and release" → Run workflow → `dryRun: false`.
+Po pushu do `master` workflow „Build and release” automatycznie publikuje nowy release na GitHub. Nie trzeba uruchamiać akcji ręcznie.
+
+### 5. Sprawdź release
+Po wysłaniu zmian sprawdź w GitHub, że workflow „Build and release” zakończył się pomyślnie i utworzył nową wersję.
 
 ## Zasady commitów release
 Wzorzec z historii repo — dwa commity, oba z `[skip ci]`:
@@ -64,6 +64,7 @@ chore(release): X.Y.Z [skip ci]
 
 ## Dodatkowa uwaga dla InAir
 Nie wolno publikować releasu, który zmienia tylko `pyproject.toml`. W projekcie Home Assistant integracja musi mieć zgodną wersję również w `custom_components/inair/manifest.json`.
+Po pushu do `master` release powinien powstać automatycznie, dlatego nie należy uruchamiać workflow ręcznie, chyba że trzeba sprawdzić lub ręcznie odzyskać błąd w pipeline.
 
 ## Minimalna checklist
 - [ ] `CHANGELOG.md` zaktualizowany w formacie repo (link compare + data)
@@ -72,7 +73,7 @@ Nie wolno publikować releasu, który zmienia tylko `pyproject.toml`. W projekci
 - [ ] `custom_components/inair/manifest.json` ma tę samą wersję
 - [ ] commit `chore(release): X.Y.Z [skip ci]`
 - [ ] zmiany wypchnięte do `master`
-- [ ] release opublikowany ręcznie: Actions → „Build and release" → `dryRun: false`
+- [ ] release utworzony automatycznie po pushu: GitHub → Actions → „Build and release”
 
 ## Przykład gotowego wydania
 ```bash
@@ -87,5 +88,5 @@ git commit -m "chore(release): 1.7.6 [skip ci]"
 # 3. Push
 git push origin master
 
-# 4. Release na GitHub (ręcznie): Actions → „Build and release" → dryRun: false
+# 4. Release na GitHub jest tworzony automatycznie po pushu do master
 ```
