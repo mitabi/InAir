@@ -5,7 +5,9 @@ description: Aktualizuje changelog, podbija wersję projektu i tworzy release co
 
 # Umiejętność: Wersjonowanie i release dla InAir
 
-Ta umiejętność ma przygotować poprawny release dla repozytorium InAir: aktualizuje wpis w changelog, podnosi wersję w odpowiednich plikach, a następnie robi commit i push do GitHub.
+Ta umiejętność ma przygotować poprawny release dla repozytorium InAir: aktualizuje wpis w changelog, podnosi wersję w odpowiednich plikach, a następnie robi commity i push do GitHub.
+
+Wywołanie: `/changelog-and-commit` (z myślnikami).
 
 ## Gdzie trzymana jest wersja w tym projekcie
 W repozytorium wersja występuje w dwóch miejscach:
@@ -23,9 +25,10 @@ Przy nowym wydaniu oba pola muszą mieć ten sam numer.
 
 ### 1. Zaktualizuj changelog
 - Otwórz `CHANGELOG.md`.
-- Dodaj nową sekcję wersji, np. `## [1.7.6] - 2026-09-25`.
-- Uzupełnij wpis w kategoriach: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
-- Zadbaj o spójność z formatem istniejących wpisów.
+- Dodaj nową sekcję na górze w formacie używanym w repo, np.:
+  `## [1.7.6](https://github.com/mitabi/InAir/compare/v1.7.5...v1.7.6) (2026-09-26)`
+- Wpisz zmiany w kategoriach użytych w repo: `### Features`, `### Bug Fixes`.
+- Każda zmiana jako osobna linia `* ...`, spójnie ze stylem istniejących wpisów.
 
 ### 2. Podbij wersję w repo
 - Zaktualizuj `version` w `pyproject.toml`.
