@@ -48,14 +48,13 @@ git commit -m "chore(release): bump version to X.Y.Z and update changelog"
 git push origin master
 ```
 
-## Zasady commit message
-Zalecany format:
+## Zasady commitów release
+Wzorzec z historii repo — dwa commity, oba z `[skip ci]`:
 
 ```bash
-chore(release): bump version to X.Y.Z and update changelog
+docs(changelog): describe vX.Y.Z changes [skip ci]
+chore(release): X.Y.Z [skip ci]
 ```
-
-To jest zgodne z praktyką Conventional Commits i jest zrozumiałe dla CI/CD.
 
 ## Dodatkowa uwaga dla InAir
 Nie wolno publikować releasu, który zmienia tylko `pyproject.toml`. W projekcie Home Assistant integracja musi mieć zgodną wersję również w `custom_components/inair/manifest.json`.
