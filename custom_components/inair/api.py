@@ -145,7 +145,7 @@ class InPostApi:
 
         return response_data.items
 
-    async def find_parcel_locker_id(self, point: InPostAirPoint) -> str | None:
+    async def find_parcel_locker_id(self, point: InPostAirPoint) -> str:
         """Find parcel locker ID by its code."""
         parcel_locker_url = get_parcel_locker_url(point)
         response = await self._request(
@@ -164,7 +164,9 @@ class InPostApi:
                 parcel_locker_url,
                 'data-shipx-url="/shipx-point-data/' in response_text,
             )
-            return None
+            raise InPostAirApiClientIdNotFoundError(
+                "Cannot extract parcel locker ID from the parcel locker page"
+            )
 
         return match.group(1)
 
@@ -221,3 +223,7 @@ class InPostAirApiClientConnectionError(InPostAirApiClientError):
 
 class InPostAirApiClientSensorsMissingError(InPostAirApiClientError):
     """Exception to indicate missing air sensors error"""
+
+
+class InPostAirApiClientIdNotFoundError(InPostAirApiClientError):
+    """Exception to indicate the parcel locker ID could not be extracted from the page."""

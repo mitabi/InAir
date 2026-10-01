@@ -15,7 +15,12 @@ from custom_components.inair.coordinator import InPostAirDataCoordinator
 from custom_components.inair.models import ParcelLocker
 from custom_components.inair.utils import get_device_info, get_parcel_locker_url
 
-from .api import InPostAirPoint, InPostApi
+from .api import (
+    InPostAirApiClientError,
+    InPostAirApiClientIdNotFoundError,
+    InPostAirPoint,
+    InPostApi,
+)
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -49,13 +54,19 @@ async def async_setup_entry(hass: HomeAssistant, entry: InPostAirConfiEntry) -> 
     ) is None:
         return False
 
-    if (parcel_locker_id := await api_client.find_parcel_locker_id(point)) is None:
+    try:
+        parcel_locker_id = await api_client.find_parcel_locker_id(point)
+    except InPostAirApiClientIdNotFoundError as err:
         _LOGGER.error(
             "Cannot set up InAir for %s: failed to resolve parcel locker ID from %s",
             point.n,
             get_parcel_locker_url(point),
         )
-        return False
+        raise ConfigEntryError(err) from err
+    except InPostAirApiClientError as err:
+        raise ConfigEntryNotReady(
+            f"Cannot resolve parcel locker ID for {point.n}: {err}"
+        ) from err
 
     parcel_locker = ParcelLocker(point.n, parcel_locker_id)
     coordinator = InPostAirDataCoordinator(hass, api_client, parcel_locker)
