@@ -1,10 +1,3 @@
-## [1.7.7](https://github.com/mitabi/InAir/compare/v1.7.6...v1.7.7) (2026-10-01)
-
-
-### Bug Fixes
-
-* support additional config-entry-scoped device registry lookup APIs for air quality index sensors
-
 ## [1.7.6](https://github.com/mitabi/InAir/compare/v1.7.5...v1.7.6) (2026-09-26)
 
 

@@ -5,7 +5,7 @@ description: Aktualizuje changelog, podbija wersję projektu i tworzy release co
 
 # Umiejętność: Wersjonowanie i release dla InAir
 
-Ta umiejętność ma przygotować poprawny release dla repozytorium InAir: aktualizuje wpis w changelog, podnosi wersję w odpowiednich plikach, a następnie robi commity i push do GitHub.
+Ta umiejętność przygotowuje release dla repozytorium InAir przez workflow Semantic Release na GitHub Actions.
 
 Wywołanie: `/changelog-and-commit` (z myślnikami).
 
@@ -17,76 +17,49 @@ W repozytorium wersja występuje w dwóch miejscach:
 Przy nowym wydaniu oba pola muszą mieć ten sam numer.
 
 ## Wymagania wstępne
-- Git jest zainstalowany i repo jest poprawnie skonfigurowane.
-- Masz dostęp do zdalnego repozytorium GitHub.
-- Plik `CHANGELOG.md` istnieje i ma format Keep a Changelog.
+- Git i GitHub CLI (`gh`) są zainstalowane, a `gh auth status` potwierdza dostęp do repozytorium.
+- Zmiany są wypchnięte na `master`.
+- Workflow `.github/workflows/release.yaml` jest uruchamiany przez `workflow_dispatch`; push sam nie publikuje release.
 
 ## Flow release
 
-### 1. Zaktualizuj changelog
-- Otwórz `CHANGELOG.md`.
-- Dodaj nową sekcję na górze w formacie używanym w repo, np.:
-  `## [1.7.6](https://github.com/mitabi/InAir/compare/v1.7.5...v1.7.6) (2026-09-26)`
-- Wpisz zmiany w kategoriach użytych w repo: `### Features`, `### Bug Fixes`.
-- Każda zmiana jako osobna linia `* ...`, spójnie ze stylem istniejących wpisów.
+### 1. Sprawdź proponowaną wersję
+Semantic Release analizuje commity od ostatniego tagu. Commity `refactor:` są wydaniem patch; pozostałe typy używają domyślnych reguł Conventional Commits.
 
-### 2. Podbij wersję w repo
-- Zaktualizuj `version` w `pyproject.toml`.
-- Zaktualizuj `version` w `custom_components/inair/manifest.json`.
-- Upewnij się, że obie wartości są identyczne.
-
-### 3. Zrób dwa commity release (wzorzec historii repo, oba z `[skip ci]`)
+Uruchom dry-run, który nie publikuje release i nie zmienia plików:
 ```bash
-git add CHANGELOG.md
-git commit -m "docs(changelog): describe v1.7.6 changes [skip ci]"
-
-git add pyproject.toml custom_components/inair/manifest.json
-git commit -m "chore(release): 1.7.6 [skip ci]"
+gh workflow run release.yaml --repo mitabi/InAir --ref master -f dryRun=true
+gh run list --repo mitabi/InAir --workflow release.yaml --limit 1
 ```
+Sprawdź log runu i potwierdź, że wybrana wersja oraz changelog obejmują oczekiwane zmiany.
 
-### 4. Wypchnij zmiany
+### 2. Opublikuj release
+Po poprawnym dry-run uruchom workflow z `dryRun=false`:
 ```bash
-git push origin master
+gh workflow run release.yaml --repo mitabi/InAir --ref master -f dryRun=false
+gh run list --repo mitabi/InAir --workflow release.yaml --limit 1
 ```
+Semantic Release aktualizuje `CHANGELOG.md`, `pyproject.toml`, `custom_components/inair/manifest.json` i `uv.lock`, tworzy commit oraz tag i publikuje release. Nie zmieniaj tych plików ani nie twórz ręcznych commitów wersji przed dispatch.
 
-Po pushu do `master` workflow „Build and release” automatycznie publikuje nowy release na GitHub. Nie trzeba uruchamiać akcji ręcznie.
-
-### 5. Sprawdź release
-Po wysłaniu zmian sprawdź w GitHub, że workflow „Build and release” zakończył się pomyślnie i utworzył nową wersję.
-
-## Zasady commitów release
-Wzorzec z historii repo — dwa commity, oba z `[skip ci]`:
-
+### 3. Sprawdź release
+Poczekaj na sukces workflow i potwierdź release:
 ```bash
-docs(changelog): describe vX.Y.Z changes [skip ci]
-chore(release): X.Y.Z [skip ci]
+gh release view vX.Y.Z --repo mitabi/InAir
 ```
 
 ## Dodatkowa uwaga dla InAir
-Nie wolno publikować releasu, który zmienia tylko `pyproject.toml`. W projekcie Home Assistant integracja musi mieć zgodną wersję również w `custom_components/inair/manifest.json`.
-Po pushu do `master` release powinien powstać automatycznie, dlatego nie należy uruchamiać workflow ręcznie, chyba że trzeba sprawdzić lub ręcznie odzyskać błąd w pipeline.
+Nie uruchamiaj `dryRun=false`, jeśli dry-run nie wskazuje oczekiwanej wersji. Workflow musi ustawić identyczną wersję w `pyproject.toml` i `custom_components/inair/manifest.json`.
 
 ## Minimalna checklist
-- [ ] `CHANGELOG.md` zaktualizowany w formacie repo (link compare + data)
-- [ ] commit `docs(changelog): describe vX.Y.Z changes [skip ci]`
-- [ ] `pyproject.toml` ma nową wersję
-- [ ] `custom_components/inair/manifest.json` ma tę samą wersję
-- [ ] commit `chore(release): X.Y.Z [skip ci]`
-- [ ] zmiany wypchnięte do `master`
-- [ ] release utworzony automatycznie po pushu: GitHub → Actions → „Build and release”
+- [ ] zmiany wypchnięte na `master`
+- [ ] dry-run wskazuje oczekiwaną wersję
+- [ ] uruchomiono workflow z `dryRun=false`
+- [ ] workflow zakończył się sukcesem
+- [ ] release istnieje na GitHub, a wersje pakietu i integracji są zgodne
 
-## Przykład gotowego wydania
+## Przykład wydania
 ```bash
-# 1. Zmiana changelog i wersji
-# 2. Commity
-git add CHANGELOG.md
-git commit -m "docs(changelog): describe v1.7.6 changes [skip ci]"
-
-git add pyproject.toml custom_components/inair/manifest.json
-git commit -m "chore(release): 1.7.6 [skip ci]"
-
-# 3. Push
-git push origin master
-
-# 4. Release na GitHub jest tworzony automatycznie po pushu do master
+gh workflow run release.yaml --repo mitabi/InAir --ref master -f dryRun=true
+# Po sprawdzeniu logów i wskazanej wersji:
+gh workflow run release.yaml --repo mitabi/InAir --ref master -f dryRun=false
 ```
