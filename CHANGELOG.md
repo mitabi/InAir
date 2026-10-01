@@ -1,3 +1,5 @@
+## [1.7.7](https://github.com/mitabi/InAir/compare/v1.7.6...v1.7.7) (2026-10-01)
+
 ## [1.7.6](https://github.com/mitabi/InAir/compare/v1.7.5...v1.7.6) (2026-09-26)
 
 
