@@ -4,6 +4,7 @@ from enum import StrEnum
 
 DOMAIN = "inair"
 CONF_PARCEL_LOCKER_ID = "parcelLockerId"
+API_TIMEOUT = 30
 
 
 class Entities(StrEnum):

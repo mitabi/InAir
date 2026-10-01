@@ -1,6 +1,5 @@
 """InPost API data coordinator."""
 
-import asyncio
 from dataclasses import dataclass
 from datetime import timedelta
 import logging
@@ -82,14 +81,13 @@ class InPostAirDataCoordinator(DataUpdateCoordinator):
         so entities can quickly look up their data.
         """
         try:
-            async with asyncio.timeout(10):
-                data = await self.api_client.get_parcel_locker_air_data(
-                    self.parcel_locker.locker_code, self.parcel_locker.locker_id
-                )
+            data = await self.api_client.get_parcel_locker_air_data(
+                self.parcel_locker.locker_code, self.parcel_locker.locker_id
+            )
 
-                return {
-                    x.name: x for line in data.air_sensors if (x := create_value(line))
-                }
+            return {
+                x.name: x for line in data.air_sensors if (x := create_value(line))
+            }
         except InPostAirApiClientError as err:
             raise UpdateFailed(err) from err
         except Exception as err:

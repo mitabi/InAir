@@ -8,6 +8,7 @@
 			}
 		},
 		"error": {
+			"cannot_connect": "Cannot connect to InPost API",
 			"unknown_parcel_locker": "Couldn't find parcel locker with this ID",
 			"parcel_locker_no_data": "This parcel locker doesn't have air quality data"
 		},

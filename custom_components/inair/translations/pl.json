@@ -4,6 +4,7 @@
             "already_configured": "Urządzenie jest już skonfigurowane"
         },
         "error": {
+            "cannot_connect": "Nie można połączyć się z API InPost",
             "unknown_parcel_locker": "Nie udało się znaleźć paczkomatu z tym kodem",
             "parcel_locker_no_data": "Ten paczkomat nie udostępnia danych o jakości powietrza"
         },

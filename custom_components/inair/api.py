@@ -4,10 +4,11 @@ import asyncio
 from dataclasses import dataclass
 import logging
 import re
-from aiohttp import ClientResponse, ClientResponseError
+from aiohttp import ClientError, ClientResponse, ClientResponseError
 from dacite import from_dict
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.aiohttp_client import async_create_clientsession
+from custom_components.inair.const import API_TIMEOUT
 from custom_components.inair.models import InPostAirPoint
 from custom_components.inair.utils import get_parcel_locker_url
 
@@ -46,7 +47,7 @@ class InPostApi:
     ) -> ClientResponse:
         """Get information from the API."""
         try:
-            async with asyncio.timeout(30):
+            async with asyncio.timeout(API_TIMEOUT):
                 response = await self.session.request(
                     method=method,
                     url=url,
@@ -58,14 +59,16 @@ class InPostApi:
 
         except TimeoutError as e:
             _LOGGER.warning("Request timed out")
-            raise InPostAirApiClientError("Request timed out") from e
+            raise InPostAirApiClientConnectionError("Request timed out") from e
         except ClientResponseError as e:
             if raise_client_response_error:
                 raise
-            raise InPostAirApiClientError("Something really wrong happened!") from e
+            raise InPostAirApiClientError(f"API returned status {e.status}") from e
+        except ClientError as e:
+            raise InPostAirApiClientConnectionError("Cannot connect to API") from e
         except Exception as exception:  # pylint: disable=broad-except
             raise InPostAirApiClientError(
-                "Something really wrong happened!"
+                "Unexpected API error"
             ) from exception
 
     async def _search_easypack24_locker(
@@ -201,7 +204,7 @@ class InPostApi:
                 raise InPostAirApiClientSensorsMissingError(
                     "Air sensors are not available"
                 ) from e
-            raise InPostAirApiClientError("Something really wrong happened!") from e
+            raise InPostAirApiClientError(f"API returned status {e.status}") from e
         except:
             raise
 
@@ -210,6 +213,10 @@ class InPostApi:
 
 class InPostAirApiClientError(Exception):
     """Exception to indicate a general API error."""
+
+
+class InPostAirApiClientConnectionError(InPostAirApiClientError):
+    """Exception to indicate a network or timeout error."""
 
 
 class InPostAirApiClientSensorsMissingError(InPostAirApiClientError):
