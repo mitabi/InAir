@@ -447,3 +447,7 @@ $RECYCLE.BIN/
 report.json
 /.claude/settings.local.json
 release.zip
+.github/skills
+.github/copilot-instructions.md
+/.claude
+/.github
