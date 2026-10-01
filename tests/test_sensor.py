@@ -95,6 +95,7 @@ async def test_get_sensors_data_uses_identifier_lookup():
 
     registry = MagicMock()
     registry.async_get_device_by_identifier.return_value = None
+    registry.async_get_devices.return_value = []
 
     with patch(
         "custom_components.inair.sensors.air_quality_index.device_registry.async_get",
@@ -104,6 +105,64 @@ async def test_get_sensors_data_uses_identifier_lookup():
 
     registry.async_get_device_by_identifier.assert_called_once_with(
         (DOMAIN, "AJE01BAPP"), "abc"
+    )
+    registry.async_get_device.assert_not_called()
+
+
+async def test_get_sensors_data_uses_connection_lookup():
+    """Device query should use the scoped connection lookup when no identifier exists."""
+    sensor = EuropeanAirQualityIndexSensor(ParcelLocker("AJE01BAPP", "56311"), None)
+    connection = ("mac", "00:11:22:33:44:55")
+    sensor.device_info = {"identifiers": set(), "connections": {connection}}
+    sensor.hass = MagicMock()
+    sensor.hass.config_entries.async_entries.return_value = [
+        MagicMock(entry_id="abc")
+    ]
+
+    registry = MagicMock()
+    registry.async_get_device_by_identifier = None
+    registry.async_get_device_by_connection.return_value = None
+    registry.async_get_devices.return_value = []
+    registry.async_get_device.return_value = None
+
+    with patch(
+        "custom_components.inair.sensors.air_quality_index.device_registry.async_get",
+        return_value=registry,
+    ):
+        await sensor.get_sensors_data([])
+
+    registry.async_get_device_by_connection.assert_called_once_with(
+        connection, "abc"
+    )
+    registry.async_get_device.assert_not_called()
+
+
+async def test_get_sensors_data_uses_scoped_devices_without_key_lookup():
+    """Device query should use async_get_devices when key-specific lookups are absent."""
+    sensor = EuropeanAirQualityIndexSensor(ParcelLocker("AJE01BAPP", "56311"), None)
+    connection = ("mac", "00:11:22:33:44:55")
+    sensor.device_info = {"identifiers": set(), "connections": {connection}}
+    sensor.hass = MagicMock()
+    sensor.hass.config_entries.async_entries.return_value = [
+        MagicMock(entry_id="abc")
+    ]
+
+    registry = MagicMock()
+    registry.async_get_device_by_identifier = None
+    registry.async_get_device_by_connection = None
+    registry.async_get_devices.return_value = []
+    registry.async_get_device.return_value = None
+
+    with patch(
+        "custom_components.inair.sensors.air_quality_index.device_registry.async_get",
+        return_value=registry,
+    ):
+        await sensor.get_sensors_data([])
+
+    registry.async_get_devices.assert_called_once_with(
+        identifiers=None,
+        connections={connection},
+        config_entry_id="abc",
     )
     registry.async_get_device.assert_not_called()
 
@@ -124,6 +183,8 @@ async def test_get_sensors_data_falls_back_to_async_get_device():
 
     registry = MagicMock()
     registry.async_get_device_by_identifier = None
+    registry.async_get_device_by_connection = None
+    registry.async_get_devices = None
     registry.async_get_device.return_value = None
 
     with patch(

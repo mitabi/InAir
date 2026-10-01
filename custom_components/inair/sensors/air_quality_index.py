@@ -74,18 +74,44 @@ class AirQualityIndexSensor(SensorEntity):
         get_device_by_identifier = getattr(
             registry, "async_get_device_by_identifier", None
         )
+        get_device_by_connection = getattr(
+            registry, "async_get_device_by_connection", None
+        )
+        get_devices = getattr(registry, "async_get_devices", None)
         device = None
-        if get_device_by_identifier is not None and identifier is not None:
-            # homeassistant >= 2026.8: device lookup is scoped to a config
-            # entry via an identifier tuple.
+        if any(
+            method is not None
+            for method in (
+                get_device_by_identifier,
+                get_device_by_connection,
+                get_devices,
+            )
+        ):
+            # New registry lookups are scoped to a config entry.
             for entry in self.hass.config_entries.async_entries(DOMAIN):
-                if (
-                    device := get_device_by_identifier(identifier, entry.entry_id)
-                ) is not None:
+                if identifier is not None and get_device_by_identifier is not None:
+                    device = get_device_by_identifier(identifier, entry.entry_id)
+                if device is None and get_device_by_connection is not None:
+                    for connection in connections or ():
+                        if (
+                            device := get_device_by_connection(
+                                connection, entry.entry_id
+                            )
+                        ) is not None:
+                            break
+                if device is None and get_devices is not None and (
+                    identifiers or connections
+                ):
+                    devices = get_devices(
+                        identifiers=identifiers or None,
+                        connections=connections or None,
+                        config_entry_id=entry.entry_id,
+                    )
+                    device = devices[0] if devices else None
+                if device is not None:
                     break
         else:
-            # homeassistant < 2026.8: the identifier-scoped API does not
-            # exist yet, so use the (not yet deprecated) unscoped lookup.
+            # Older Home Assistant versions only have the unscoped lookup.
             device = registry.async_get_device(
                 identifiers=identifiers, connections=connections
             )
