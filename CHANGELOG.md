@@ -1,3 +1,10 @@
+## [1.7.10](https://github.com/mitabi/InAir/compare/v1.7.9...v1.7.10) (2026-10-06)
+
+
+### Bug Fixes
+
+* update minimum supported Home Assistant version to 2024.6.0 ([4d6e30f](https://github.com/mitabi/InAir/commit/4d6e30f3973b46bd3771d54819da8ba81f1eea61))
+
 ## [1.7.9](https://github.com/mitabi/InAir/compare/v1.7.8...v1.7.9) (2026-10-06)
 
 
