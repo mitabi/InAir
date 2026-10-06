@@ -1,3 +1,11 @@
+## [1.7.8](https://github.com/mitabi/InAir/compare/v1.7.7...v1.7.8) (2026-10-06)
+
+
+### Bug Fixes
+
+* increase coordinator update interval to 30 minutes ([5d206a5](https://github.com/mitabi/InAir/commit/5d206a5802250123a20791610502530f7309c7d2))
+* regenerate uv.lock to resolve parse error ([4525954](https://github.com/mitabi/InAir/commit/452595421aced92014869b21ae0b53d28c85715e))
+
 ## [1.7.7](https://github.com/mitabi/InAir/compare/v1.7.6...v1.7.7) (2026-10-01)
 
 ## [1.7.6](https://github.com/mitabi/InAir/compare/v1.7.5...v1.7.6) (2026-09-26)
