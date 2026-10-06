@@ -1,3 +1,10 @@
+## [1.7.9](https://github.com/mitabi/InAir/compare/v1.7.8...v1.7.9) (2026-10-06)
+
+
+### Bug Fixes
+
+* fall back to the ShipX air index level when the air data endpoint returns HTTP 403 ([3b90c1f](https://github.com/mitabi/InAir/commit/3b90c1f712a11e79b3dc99d4f083f0be8c9efba4))
+
 ## [1.7.8](https://github.com/mitabi/InAir/compare/v1.7.7...v1.7.8) (2026-10-06)
 
 
