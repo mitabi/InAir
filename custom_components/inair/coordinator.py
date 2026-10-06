@@ -1,16 +1,20 @@
 """InPost API data coordinator."""
 
-from dataclasses import dataclass
-from datetime import timedelta
 import logging
 import re
+from dataclasses import dataclass
+from datetime import timedelta
 
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
-from .models import ParcelLocker
-from .api import InPostAirApiClientError, InPostApi
+from .api import (
+    InPostAirApiClientBlockedError,
+    InPostAirApiClientError,
+    InPostApi,
+)
 from .const import Entities
+from .models import ParcelLocker
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -88,6 +92,14 @@ class InPostAirDataCoordinator(DataUpdateCoordinator):
             return {
                 x.name: x for line in data.air_sensors if (x := create_value(line))
             }
+        except InPostAirApiClientBlockedError as err:
+            _LOGGER.warning(
+                "Air data endpoint for %s is blocked (%s); falling back to the ShipX "
+                "air index level",
+                self.parcel_locker.locker_code,
+                err,
+            )
+            return self.data or {}
         except InPostAirApiClientError as err:
             raise UpdateFailed(err) from err
         except Exception as err:

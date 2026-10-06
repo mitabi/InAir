@@ -1,13 +1,15 @@
 """Functions to connect to InPost APIs."""
 
 import asyncio
-from dataclasses import dataclass
 import logging
 import re
+from dataclasses import dataclass
+
 from aiohttp import ClientError, ClientResponse, ClientResponseError
 from dacite import from_dict
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.aiohttp_client import async_create_clientsession
+
 from custom_components.inair.const import API_TIMEOUT
 from custom_components.inair.models import InPostAirPoint
 from custom_components.inair.utils import get_parcel_locker_url
@@ -206,6 +208,10 @@ class InPostApi:
                 raise InPostAirApiClientSensorsMissingError(
                     "Air sensors are not available"
                 ) from e
+            if e.status == 403:
+                raise InPostAirApiClientBlockedError(
+                    "Air data endpoint is blocked (HTTP 403)"
+                ) from e
             raise InPostAirApiClientError(f"API returned status {e.status}") from e
         except:
             raise
@@ -223,6 +229,10 @@ class InPostAirApiClientConnectionError(InPostAirApiClientError):
 
 class InPostAirApiClientSensorsMissingError(InPostAirApiClientError):
     """Exception to indicate missing air sensors error"""
+
+
+class InPostAirApiClientBlockedError(InPostAirApiClientError):
+    """Exception to indicate the air data endpoint is blocked (HTTP 403)."""
 
 
 class InPostAirApiClientIdNotFoundError(InPostAirApiClientError):
