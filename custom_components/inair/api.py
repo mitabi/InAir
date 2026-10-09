@@ -39,6 +39,7 @@ class InPostApi:
         """Init class."""
         self.hass = hass
         self.session = async_create_clientsession(hass)
+        self._parcel_locker_url: str | None = None
 
     async def _request(
         self,
@@ -150,6 +151,7 @@ class InPostApi:
     async def find_parcel_locker_id(self, point: InPostAirPoint) -> str:
         """Find parcel locker ID by its code."""
         parcel_locker_url = get_parcel_locker_url(point)
+        self._parcel_locker_url = parcel_locker_url
         response = await self._request(
             method="get",
             url=parcel_locker_url,
@@ -196,11 +198,19 @@ class InPostApi:
         self, locker_code: str, locker_id: str
     ) -> ParcelLockerAirDataResponse:
         """Get air data from parcel locker."""
+        headers = {
+            "X-Requested-With": "XMLHttpRequest",
+            "Origin": "https://inpost.pl",
+            "Accept": "*/*",
+        }
+        if self._parcel_locker_url:
+            headers["Referer"] = self._parcel_locker_url
+
         try:
             response = await self._request(
                 method="post",
                 url=f"https://inpost.pl/shipx-point-data/{locker_id}/{locker_code}/air_index_level",
-                headers={"X-Requested-With": "XMLHttpRequest"},
+                headers=headers,
                 raise_client_response_error=True,
             )
         except ClientResponseError as e:
