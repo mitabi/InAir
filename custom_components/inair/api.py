@@ -6,6 +6,8 @@ import re
 from dataclasses import dataclass
 
 from aiohttp import ClientError, ClientResponse, ClientResponseError
+from curl_cffi.requests import AsyncSession
+from curl_cffi.requests.errors import RequestsError
 from dacite import from_dict
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.aiohttp_client import async_create_clientsession
@@ -197,7 +199,11 @@ class InPostApi:
     async def get_parcel_locker_air_data(
         self, locker_code: str, locker_id: str
     ) -> ParcelLockerAirDataResponse:
-        """Get air data from parcel locker."""
+        """Get air data from parcel locker.
+
+        Cloudflare rejects Python HTTP clients on this endpoint by their TLS
+        fingerprint, so a client impersonating a browser has to be used.
+        """
         headers = {
             "X-Requested-With": "XMLHttpRequest",
             "Origin": "https://inpost.pl",
@@ -206,27 +212,33 @@ class InPostApi:
         if self._parcel_locker_url:
             headers["Referer"] = self._parcel_locker_url
 
-        try:
-            response = await self._request(
-                method="post",
-                url=f"https://inpost.pl/shipx-point-data/{locker_id}/{locker_code}/air_index_level",
-                headers=headers,
-                raise_client_response_error=True,
-            )
-        except ClientResponseError as e:
-            if e.status == 404:
-                raise InPostAirApiClientSensorsMissingError(
-                    "Air sensors are not available"
-                ) from e
-            if e.status == 403:
-                raise InPostAirApiClientBlockedError(
-                    "Air data endpoint is blocked (HTTP 403)"
-                ) from e
-            raise InPostAirApiClientError(f"API returned status {e.status}") from e
-        except:
-            raise
+        url = f"https://inpost.pl/shipx-point-data/{locker_id}/{locker_code}/air_index_level"
 
-        return from_dict(ParcelLockerAirDataResponse, await response.json())
+        try:
+            async with AsyncSession() as session:
+                response = await session.post(
+                    url,
+                    headers=headers,
+                    impersonate="firefox",
+                    timeout=API_TIMEOUT,
+                )
+        except RequestsError as e:
+            raise InPostAirApiClientConnectionError(
+                "Cannot connect to the air data endpoint"
+            ) from e
+
+        if response.status_code == 404:
+            raise InPostAirApiClientSensorsMissingError("Air sensors are not available")
+        if response.status_code == 403:
+            raise InPostAirApiClientBlockedError(
+                "Air data endpoint is blocked (HTTP 403)"
+            )
+        if response.status_code >= 400:
+            raise InPostAirApiClientError(
+                f"API returned status {response.status_code}"
+            )
+
+        return from_dict(ParcelLockerAirDataResponse, response.json())
 
 
 class InPostAirApiClientError(Exception):

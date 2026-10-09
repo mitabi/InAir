@@ -3,7 +3,7 @@ name = "InAir"
 version = "1.7.11"
 readme = "README.md"
 requires-python = ">=3.12"
-dependencies = ["dacite==1.9.2", "python-slugify==8.0.4"]
+dependencies = ["curl_cffi==0.16.3", "dacite==1.9.2", "python-slugify==8.0.4"]
 
 [dependency-groups]
 dev = [
