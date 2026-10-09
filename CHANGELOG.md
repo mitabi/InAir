@@ -1,3 +1,10 @@
+## [1.7.12](https://github.com/mitabi/InAir/compare/v1.7.11...v1.7.12) (2026-10-09)
+
+
+### Bug Fixes
+
+* fetch air data with a browser-like TLS fingerprint ([5b86a38](https://github.com/mitabi/InAir/commit/5b86a3830e179bbda70633f5d6e06d38410a1d25))
+
 ## [1.7.11](https://github.com/mitabi/InAir/compare/v1.7.10...v1.7.11) (2026-10-09)
 
 
