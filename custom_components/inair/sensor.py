@@ -148,8 +148,8 @@ async def async_setup_entry(
     async_add_entities(
         [
             *base_sensors,
-            PolishAirQualityIndexSensor(parcel_locker, coordinator.api_client),
-            EuropeanAirQualityIndexSensor(parcel_locker, coordinator.api_client),
+            PolishAirQualityIndexSensor(parcel_locker, coordinator),
+            EuropeanAirQualityIndexSensor(parcel_locker, coordinator),
         ],
         update_before_add=True,
     )

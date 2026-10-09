@@ -28,6 +28,9 @@ class ValueWithNorm:
     norm: float
 
 
+AIR_INDEX_LEVEL_KEY = "air_index_level"
+
+
 @dataclass
 class ValueWithoutNorm:
     """Value without norm."""
@@ -90,7 +93,8 @@ class InPostAirDataCoordinator(DataUpdateCoordinator):
             )
 
             return {
-                x.name: x for line in data.air_sensors if (x := create_value(line))
+                **{x.name: x for line in data.air_sensors if (x := create_value(line))},
+                AIR_INDEX_LEVEL_KEY: data.air_index_level,
             }
         except InPostAirApiClientBlockedError as err:
             _LOGGER.warning(

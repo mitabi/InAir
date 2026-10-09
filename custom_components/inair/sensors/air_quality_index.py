@@ -10,6 +10,7 @@ from homeassistant.helpers import device_registry, entity_registry
 from homeassistant.util import dt as dt_util
 
 from custom_components.inair import utils
+from custom_components.inair.coordinator import AIR_INDEX_LEVEL_KEY
 from custom_components.inair.models import ParcelLocker
 from custom_components.inair.const import DOMAIN, Entities
 
@@ -29,12 +30,16 @@ class AirQualityIndexSensor(SensorEntity):
     def __init__(
         self,
         parcel_locker: ParcelLocker,
-        api_client: "InPostApi | None" = None,
+        coordinator=None,
     ) -> None:
         self._attr_device_info = utils.get_device_info(parcel_locker)
         self._attr_icon = "mdi:air-filter"
-        self._api_client = api_client
+        self._coordinator = coordinator
         self._locker_code = parcel_locker.locker_code
+
+    @property
+    def _api_client(self) -> "InPostApi | None":
+        return getattr(self._coordinator, "api_client", None)
 
     @abstractmethod
     async def async_update(self) -> None:
@@ -148,6 +153,15 @@ class AirQualityIndexSensor(SensorEntity):
         )
 
         return values
+
+    async def get_current_air_index_level(self) -> str | None:
+        """Get air quality index level from the point data endpoint response."""
+        data = getattr(self._coordinator, "data", None)
+        level = data.get(AIR_INDEX_LEVEL_KEY) if isinstance(data, dict) else None
+        if isinstance(level, str) and level:
+            return level.upper()
+
+        return await self.get_shipx_air_index_level()
 
     async def get_shipx_air_index_level(self) -> str | None:
         """Retrieve fallback air quality index level from ShipX API."""

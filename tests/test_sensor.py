@@ -7,7 +7,7 @@ import pytest
 from custom_components.inair.const import DOMAIN
 
 from custom_components.inair.const import Entities
-from custom_components.inair.coordinator import ValueWithNorm
+from custom_components.inair.coordinator import AIR_INDEX_LEVEL_KEY, ValueWithNorm
 from custom_components.inair.models import ParcelLocker
 from custom_components.inair.sensor import PARCEL_LOCKER_SENSORS
 from custom_components.inair.sensors.aqi.european import (
@@ -67,12 +67,36 @@ def test_pm_sensors_use_density_unit():
     ],
 )
 @pytest.mark.parametrize("expected_lingering_timers", [True])
+async def test_aqi_uses_point_data_air_index_level(sensor_cls, expected):
+    """AQI sensors should use the air_index_level from the point data response."""
+    coordinator = MagicMock()
+    coordinator.data = {AIR_INDEX_LEVEL_KEY: expected}
+
+    sensor = sensor_cls(ParcelLocker("AJE01BAPP", "56311"), coordinator)
+    sensor.get_sensors_data = AsyncMock(return_value=[])
+
+    await sensor.async_update()
+
+    assert sensor.native_value == expected
+
+
+@pytest.mark.parametrize(
+    "sensor_cls, expected",
+    [
+        (EuropeanAirQualityIndexSensor, "VERY_GOOD"),
+        (PolishAirQualityIndexSensor, "VERY_GOOD"),
+    ],
+)
+@pytest.mark.parametrize("expected_lingering_timers", [True])
 async def test_aqi_fallback_to_shipx_air_index_level(sensor_cls, expected):
-    """AQI sensors should fall back to ShipX air_index_level when no history exists."""
+    """AQI sensors should fall back to ShipX air_index_level without point data."""
     api_client = AsyncMock()
     api_client.get_shipx_air_index_level = AsyncMock(return_value=expected)
+    coordinator = MagicMock()
+    coordinator.data = {Entities.PM2_5: ValueWithNorm(Entities.PM2_5, 5.0, 24.0)}
+    coordinator.api_client = api_client
 
-    sensor = sensor_cls(ParcelLocker("AJE01BAPP", "56311"), api_client)
+    sensor = sensor_cls(ParcelLocker("AJE01BAPP", "56311"), coordinator)
     sensor.get_sensors_data = AsyncMock(return_value=[])
 
     await sensor.async_update()
