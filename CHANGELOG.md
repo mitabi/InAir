@@ -1,3 +1,11 @@
+## [1.7.11](https://github.com/mitabi/InAir/compare/v1.7.10...v1.7.11) (2026-10-09)
+
+
+### Bug Fixes
+
+* send Origin, Referer and Accept with the point data request ([edf83f8](https://github.com/mitabi/InAir/commit/edf83f8f3058f5ec7af9d6802978c8dba3d3d023))
+* take the air quality index level from the point data response ([ca1a05f](https://github.com/mitabi/InAir/commit/ca1a05ff481df5bc9701642a6bd38e402f7b684a))
+
 ## [1.7.10](https://github.com/mitabi/InAir/compare/v1.7.9...v1.7.10) (2026-10-06)
 
 
