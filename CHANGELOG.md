@@ -1,3 +1,10 @@
+## [1.7.13](https://github.com/mitabi/InAir/compare/v1.7.12...v1.7.13) (2026-10-15)
+
+
+### Bug Fixes
+
+* relax python-slugify requirement ([1b91f9d](https://github.com/mitabi/InAir/commit/1b91f9d1b19e60c76c1baffdeae1ac877a004c34))
+
 ## [1.7.12](https://github.com/mitabi/InAir/compare/v1.7.11...v1.7.12) (2026-10-09)
 
 
